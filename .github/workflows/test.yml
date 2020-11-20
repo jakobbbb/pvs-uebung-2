@@ -1,0 +1,27 @@
+name: test
+
+on: [push]
+
+jobs:
+    test:
+        strategy:
+            matrix:
+                os: [ubuntu-20.04, macos-latest]
+        runs-on: ${{ matrix.os }}
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Dependencies (macOS)
+              if: runner.os == 'macOS'
+              run: brew install libomp clang-format
+
+            - name: Build
+              run: make
+
+            - name: Run Tests
+              run: make test
+
+            - name: Run Binaries
+              run: |
+                  ./quicksort
