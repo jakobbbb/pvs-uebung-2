@@ -1,3 +1,9 @@
+#############################
+*.pdf
+quicksort*
+!.*cpp
+#############################
+
 # Compiled Static libraries #
 #############################
 *.lai
@@ -92,7 +98,3 @@ public/fonts/
 *.code-workspace
 *.plist
 /bin/
-
-
-pvs.pdf
-quicksort
