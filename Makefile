@@ -21,6 +21,10 @@ test: quicksort
 clean:
 	rm quicksort
 
+.PHONY: codeformat
+codeformat:
+	clang-format -i *{c,h}pp
+
 PDF_FILENAME=$(ASSIGNMENT_TITLE).pdf
 .PHONY: pdf
 pdf:
