@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
         return test();
     }
 
-    int iter = atoi(argv[1]);  // Wiederholungen
+    int iter = atoi(argv[1]);              // Wiederholungen
     float* v = init_vector(NUM_ELEMENTS);  // Feld
 
     printf("Perform vector sorting %d times...\n", iter);
