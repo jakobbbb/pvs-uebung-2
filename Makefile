@@ -8,6 +8,10 @@ ASSIGNMENT_TITLE=pvs$(ASSIGNMENT_NUMBER)-grp$(ASSIGNMENT_GROUP)
 .PHONY: build
 build: quicksort
 
+.PHONY: debug
+debug: GCC_FLAGS += -g
+debug: build
+
 .PHONY: quicksort
 quicksort:
 	g++ $(GCC_FLAGS) -o quicksort quicksort.cpp test.cpp
