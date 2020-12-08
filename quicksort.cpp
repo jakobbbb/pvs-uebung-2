@@ -1,6 +1,8 @@
 #include "quicksort.hpp"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "test.hpp"
 
 #define NUM_ELEMENTS 32767  // Elementanzahl
 
@@ -48,6 +50,9 @@ int main(int argc, char* argv[]) {
     if (argc != 2) {  // Benutzungshinweis
         printf("Vector sorting\nUsage: %s <NumIter>\n", argv[0]);
         return 1;
+    }
+    if (strcmp(argv[1], "test") == 0) {
+        return test();
     }
 
     int iter = atoi(argv[1]);  // Wiederholungen

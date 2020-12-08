@@ -1,4 +1,5 @@
 #ifndef QUICKSORT_HPP
+#define QUICKSORT_HPP
 
 #define NUM 32767  // Elementanzahl
 
@@ -11,5 +12,4 @@ void quicksort(float* v, int start, int end);
 /** Initialize vector with n random floats. */
 float* init_vector(int n);
 
-#define QUICKSORT_HPP
 #endif  // QUICKSORT_HPP

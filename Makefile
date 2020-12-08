@@ -10,12 +10,11 @@ build: quicksort
 
 .PHONY: quicksort
 quicksort:
-	g++ $(GCC_FLAGS) -o quicksort quicksort.cpp
+	g++ $(GCC_FLAGS) -o quicksort quicksort.cpp test.cpp
 
 .PHONY: test
 test: quicksort
-	g++ $(GCC_FLAGS) -o test test.cpp
-	./test
+	./quicksort test
 
 .PHONY: clean
 clean:
