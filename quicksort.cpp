@@ -1,7 +1,8 @@
+#include "quicksort.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NUM 32767  // Elementanzahl
+#define NUM_ELEMENTS 32767  // Elementanzahl
 
 /** Vertausche zwei Zahlen im Feld v an der Position i und j */
 void swap(float* v, int i, int j) {
@@ -33,23 +34,28 @@ void quicksort(float* v, int start, int end) {
         quicksort(v, i, end);  // Rechtes Segment zerlegen
 }
 
-int main(int argc, char* argv[]) {
-    float* v;  // Feld
-    int iter;  // Wiederholungen
+float* init_vector(int n) {
+    float* v = (float*)calloc(n, sizeof(float));  // Speicher reservieren
+    return v;
+}
 
+void fill_vector(float* v) {
+    for (int j = 0; j < NUM_ELEMENTS; j++)  // Mit Zufallszahlen initialisieren
+        v[j] = (float)rand();
+}
+
+int main(int argc, char* argv[]) {
     if (argc != 2) {  // Benutzungshinweis
         printf("Vector sorting\nUsage: %s <NumIter>\n", argv[0]);
-        return 0;
+        return 1;
     }
-    iter = atoi(argv[1]);
-    v = (float*)calloc(NUM, sizeof(float));  // Speicher reservieren
+
+    int iter = atoi(argv[1]);  // Wiederholungen
+    float* v = init_vector(NUM_ELEMENTS);  // Feld
 
     printf("Perform vector sorting %d times...\n", iter);
-    for (int i = 0; i < iter; i++) {   // Wiederhole das Sortieren
-        for (int j = 0; j < NUM; j++)  // Mit Zufallszahlen initialisieren
-            v[j] = (float)rand();
-
-        quicksort(v, 0, NUM - 1);  // Sortierung
+    for (int i = 0; i < iter; i++) {  // Wiederhole das Sortieren
+        quicksort(v, 0, NUM - 1);     // Sortierung
     }
     printf("\nDone.\n");
     return 0;

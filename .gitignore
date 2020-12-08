@@ -1,7 +1,9 @@
 #############################
 *.pdf
 quicksort*
-!.*cpp
+test*
+!*.cpp
+!*.hpp
 #############################
 
 # Compiled Static libraries #
