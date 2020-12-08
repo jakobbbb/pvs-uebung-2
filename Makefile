@@ -14,7 +14,8 @@ quicksort:
 
 .PHONY: test
 test: quicksort
-	@echo "Tests not implemented yet." && exit 1
+	g++ $(GCC_FLAGS) -o test test.cpp
+	./test
 
 .PHONY: clean
 clean:
