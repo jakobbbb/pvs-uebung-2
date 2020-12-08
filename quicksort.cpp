@@ -4,8 +4,6 @@
 #include <string.h>
 #include "test.hpp"
 
-#define NUM_ELEMENTS 32767  // Elementanzahl
-
 /** Vertausche zwei Zahlen im Feld v an der Position i und j */
 void swap(float* v, int i, int j) {
     float t = v[i];
@@ -41,8 +39,8 @@ float* init_vector(int n) {
     return v;
 }
 
-void fill_vector(float* v) {
-    for (int j = 0; j < NUM_ELEMENTS; j++)  // Mit Zufallszahlen initialisieren
+void fill_vector(float* v, int n) {
+    for (int j = 0; j < n; j++)  // Mit Zufallszahlen initialisieren
         v[j] = (float)rand();
 }
 
@@ -59,8 +57,8 @@ int main(int argc, char* argv[]) {
     float* v = init_vector(NUM_ELEMENTS);  // Feld
 
     printf("Perform vector sorting %d times...\n", iter);
-    for (int i = 0; i < iter; i++) {  // Wiederhole das Sortieren
-        quicksort(v, 0, NUM - 1);     // Sortierung
+    for (int i = 0; i < iter; i++) {        // Wiederhole das Sortieren
+        quicksort(v, 0, NUM_ELEMENTS - 1);  // Sortierung
     }
     printf("\nDone.\n");
     return 0;
