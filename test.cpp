@@ -63,7 +63,10 @@ int test() {
     printf("Testing...\n");
     test_is_sorted();
 
-    test_sort(quicksort, "quicksort (given implementation)");
+    test_sort(quicksort, "serial");
+    // test_sort(quicksort_a, "parallel variant A");
+    // test_sort(quicksort_b, "parallel variant B");
+    // test_sort(quicksort_c, "parallel variant C");
 
     printf("All went well :)\n");
     return 0;
