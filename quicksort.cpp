@@ -1,8 +1,9 @@
 #include "quicksort.hpp"
+#include "test.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "test.hpp"
+#include <omp.h>
 
 /** Vertausche zwei Zahlen im Feld v an der Position i und j */
 void swap(float* v, int i, int j) {
@@ -32,6 +33,94 @@ void quicksort(float* v, int start, int end) {
         quicksort(v, start, j);  // Linkes Segment zerlegen
     if (i < end)
         quicksort(v, i, end);  // Rechtes Segment zerlegen
+}
+
+void quicksort_a(float* v, int start, int end) {
+    int i = start, j = end;
+    float pivot;
+
+    pivot = v[(start + end) / 2];  // mittleres Element
+    do {
+        while (v[i] < pivot)
+            i++;
+        while (pivot < v[j])
+            j--;
+        if (i <= j) {  // wenn sich beide Indizes nicht beruehren
+            swap(v, i, j);
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+#pragma omp parallel
+    {
+#pragma omp single
+    if (start < j)               // Teile und herrsche
+        quicksort(v, start, j);  // Linkes Segment zerlegen
+#pragma omp single
+    if (i < end)
+        quicksort(v, i, end);  // Rechtes Segment zerlegen
+    }
+}
+
+void quicksort_b(float* v, int start, int end) {
+    int i = start, j = end;
+    float pivot;
+
+    pivot = v[(start + end) / 2];  // mittleres Element
+    do {
+        while (v[i] < pivot)
+            i++;
+        while (pivot < v[j])
+            j--;
+        if (i <= j) {  // wenn sich beide Indizes nicht beruehren
+            swap(v, i, j);
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+#pragma omp parallel
+#pragma omp single
+    {
+    if (start < j)               // Teile und herrsche
+#pragma omp task
+        quicksort(v, start, j);  // Linkes Segment zerlegen
+    if (i < end)
+#pragma omp task
+        quicksort(v, i, end);  // Rechtes Segment zerlegen
+    }
+}
+
+void quicksort_c(float* v, int start, int end, int) {
+    int i = start, j = end;
+    float pivot;
+
+    pivot = v[(start + end) / 2];  // mittleres Element
+    do {
+        while (v[i] < pivot)
+            i++;
+        while (pivot < v[j])
+            j--;
+        if (i <= j) {  // wenn sich beide Indizes nicht beruehren
+            swap(v, i, j);
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+    if (start < j)               // Teile und herrsche
+#pragma omp task
+        quicksort(v, start, j);  // Linkes Segment zerlegen
+    if (i < end)
+#pragma omp task
+        quicksort(v, i, end);  // Rechtes Segment zerlegen
+}
+
+void quicksort_c(float* v, int start, int end) {
+#pragma omp parallel
+#pragma omp single
+    quicksort_c(v, start, end, 0);
 }
 
 float* init_vector(int n) {
