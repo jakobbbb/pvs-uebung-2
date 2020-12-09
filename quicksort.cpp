@@ -34,6 +34,42 @@ void quicksort(float* v, int start, int end) {
         quicksort(v, i, end);  // Rechtes Segment zerlegen
 }
 
+
+#define THRES 100
+
+void _quicksort_c(float* v, int start, int end);
+
+void quicksort_c(float* v, int start, int end) {
+#pragma omp parallel
+#pragma omp single
+    _quicksort_c(v, start, end);
+}
+
+void _quicksort_c(float* v, int start, int end) {
+    int i = start, j = end;
+    float pivot;
+
+    pivot = v[(start + end) / 2];  // mittleres Element
+    do {
+        while (v[i] < pivot)
+            i++;
+        while (pivot < v[j])
+            j--;
+        if (i <= j) {  // wenn sich beide Indizes nicht beruehren
+            swap(v, i, j);
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+    if (start < j)  // Teile und herrsche
+#pragma omp task if(j - start > THRES)
+        _quicksort_c(v, start, j);  // Linkes Segment zerlegen
+    if (i < end)
+#pragma omp task if(end - i > THRES)
+        _quicksort_c(v, i, end);  // Rechtes Segment zerlegen
+}
+
 float* init_vector(int n) {
     float* v = (float*)calloc(n, sizeof(float));  // Speicher reservieren
     return v;
