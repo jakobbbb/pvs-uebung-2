@@ -92,6 +92,12 @@ void quicksort_b(float* v, int start, int end) {
     }
 }
 
+void quicksort_c(float* v, int start, int end) {
+#pragma omp parallel
+#pragma omp single
+    _quicksort_c(v, start, end);
+}
+
 void _quicksort_c(float* v, int start, int end) {
     int i = start, j = end;
     float pivot;
@@ -115,12 +121,6 @@ void _quicksort_c(float* v, int start, int end) {
     if (i < end)
 #pragma omp task
         _quicksort_c(v, i, end);  // Rechtes Segment zerlegen
-}
-
-void quicksort_c(float* v, int start, int end) {
-#pragma omp parallel
-#pragma omp single
-    _quicksort_c(v, start, end);
 }
 
 float* init_vector(int n) {
