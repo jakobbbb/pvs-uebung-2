@@ -44,7 +44,7 @@ double test_sort_once(quicksort_func sort, float* v, int num_elements) {
     return end - start;
 }
 
-void test_sort(quicksort_func sort, const char* name) {
+double test_sort(quicksort_func sort, const char* name, double time_serial=0) {
     printf("Testing sorting function '%s'...\n", name);
 
     for (int n = 1; n < 10; ++n) {
@@ -57,16 +57,21 @@ void test_sort(quicksort_func sort, const char* name) {
     }
     printf("On average, it took %.3f ms to sort %d elements!\n",
            time_taken / NUM_RUNS * 1000, NUM_ELEMENTS);
+    if (time_serial != 0) {
+        double speedup = time_serial / time_taken;
+        printf("Speedup is %.4f %s\n", speedup, speedup > 1 ? ":)" : ":(");
+    }
+    return time_taken;
 }
 
 int test() {
     printf("Testing...\n");
     test_is_sorted();
 
-    test_sort(quicksort, "serial");
-    // test_sort(quicksort_a, "parallel variant A");
-    // test_sort(quicksort_b, "parallel variant B");
-    // test_sort(quicksort_c, "parallel variant C");
+    double time_serial = test_sort(quicksort, "serial");
+    // test_sort(quicksort_a, "parallel variant A", time_serial);
+    // test_sort(quicksort_b, "parallel variant B", time_serial);
+    // test_sort(quicksort_c, "parallel variant C", time_serial);
 
     printf("All went well :)\n");
     return 0;
