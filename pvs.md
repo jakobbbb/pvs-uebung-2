@@ -13,6 +13,7 @@ listings-no-page-break: true
 | i7-4702MQ / 4 / 8     |    1.1655 |    1.1345 |    3.6758 |
 | i5-3320M / 2 / 4      |    1.0850 |    1.0608 |    2.1462 |
 | Ryzen 5 3600 / 6 / 12 |    1.1226 |    1.3057 |    1.4277 |
+| i7-4702MQ / 4 / 8     |    1.1655 |    1.1345 |    3.6758 |
 
 Node: The speedup on the Ryzen machine is much lower than expected,
 perhaps this is due to the machine running Windows.  We used MinGW's
@@ -48,37 +49,6 @@ void quicksort_a(float *v, int start, int end) {
             quicksort(v, i, end);
       }
   }
-}
-```
-
-
-# Variant B
-
-The second parallel quicksort uses `sections`... (TODO)
-
-```cpp
-#define THRES_B 2000
-
-void quicksort_b(float* v, int start, int end) {
-
-    /* ... */
-
-#pragma omp parallel if (end-start > THRES_B)
-    {
-#pragma omp sections
-        {
-#pragma omp section
-            {
-                if (start < j)               // Teile und herrsche
-                    quicksort(v, start, j);  // Linkes Segment zerlegen
-            }
-#pragma omp section
-            {
-                if (i < end)
-                    quicksort(v, i, end);  // Rechtes Segment zerlegen
-            }
-        }
-    }
 }
 ```
 
