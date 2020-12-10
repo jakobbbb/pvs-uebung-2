@@ -8,7 +8,7 @@ listings-no-page-break: true
 
 # Overview of Speedups
 
-| CPU / Cores / Threads | Speedup A | Speedup B | Speedup C |
+|**CPU / Cores / Threads**|**Speedup A**|**Speedup B**|**Speedup C**|
 |-----------------------|-----------|-----------|-----------|
 | i7-4702MQ / 4 / 8     |    1.1655 |    1.1345 |    3.6758 |
 | i5-3320M / 2 / 4      |    1.0850 |    1.0608 |    2.1462 |
