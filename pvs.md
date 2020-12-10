@@ -28,21 +28,8 @@ divides loop iterations between the spawned threads.
 #define THRES_A 800
 
 void quicksort_a(float *v, int start, int end) {
-  int i = start, j = end;
-  float pivot;
 
-  pivot = v[(start + end) / 2];
-  do {
-      while (v[i] < pivot)
-          i++;
-      while (pivot < v[j])
-          j--;
-      if (i <= j) {
-          swap(v, i, j);
-          i++;
-          j--;
-      }
- } while (i <= j);
+  /* ... */
 
   #pragma omp parallel for
   for (int k = 0; k <= 1; ++k)
