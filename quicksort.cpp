@@ -73,6 +73,42 @@ void quicksort_a(float *v, int start, int end) {
   }
 }
 
+#define THRES_B 2000
+
+void quicksort_b(float* v, int start, int end) {
+    int i = start, j = end;
+    float pivot;
+
+    pivot = v[(start + end) / 2];  // mittleres Element
+    do {
+        while (v[i] < pivot)
+            i++;
+        while (pivot < v[j])
+            j--;
+        if (i <= j) {  // wenn sich beide Indizes nicht beruehren
+            swap(v, i, j);
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+#pragma omp parallel if (end-start > THRES_B)
+    {
+#pragma omp sections
+        {
+#pragma omp section
+            {
+                if (start < j)               // Teile und herrsche
+                    quicksort(v, start, j);  // Linkes Segment zerlegen
+            }
+#pragma omp section
+            {
+                if (i < end)
+                    quicksort(v, i, end);  // Rechtes Segment zerlegen
+            }
+        }
+    }
+}
 
 #define THRES_C 100
 
