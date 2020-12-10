@@ -50,6 +50,7 @@ void quicksort_a(float *v, int start, int end) {
   }
 }
 ```
+
 | `THRES` | Speedup |
 |---------|---------|
 |       0 |  0.1937 |
@@ -71,7 +72,8 @@ different sections.
 
 Again, there is a threshold for parallel execution.
 
-```#define THRES_B 2000
+```cpp
+#define THRES_B 2000
 
 void quicksort_b(float* v, int start, int end) {
     /* ... */
