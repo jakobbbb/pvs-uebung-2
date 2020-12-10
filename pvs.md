@@ -22,6 +22,36 @@ gcc.
 
 (TODO)
 
+# Variant B
+
+The second parallel quicksort uses `sections`... (TODO)
+
+```cpp
+#define THRES_B 2000
+
+void quicksort_b(float* v, int start, int end) {
+
+    /* ... */
+
+#pragma omp parallel if (end-start > THRES_B)
+    {
+#pragma omp sections
+        {
+#pragma omp section
+            {
+                if (start < j)               // Teile und herrsche
+                    quicksort(v, start, j);  // Linkes Segment zerlegen
+            }
+#pragma omp section
+            {
+                if (i < end)
+                    quicksort(v, i, end);  // Rechtes Segment zerlegen
+            }
+        }
+    }
+}
+```
+
 # Variant C
 
 Our third variation on parallelized Quicksort attempts to reduce
