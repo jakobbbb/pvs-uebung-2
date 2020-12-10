@@ -20,7 +20,50 @@ gcc.
 
 # Variant A
 
-(TODO)
+This is the first parallel version. Here we used `parallel for` which fuses
+`parallel` and `for`. The former spawns a group of threads while the latter
+divides loop iterations between the spawned threads.
+
+```cpp
+#define THRES_A 800
+
+void quicksort_a(float *v, int start, int end) {
+  int i = start, j = end;
+  float pivot;
+
+  pivot = v[(start + end) / 2];
+  do {
+      while (v[i] < pivot)
+          i++;
+      while (pivot < v[j])
+          j--;
+      if (i <= j) {
+          swap(v, i, j);
+          i++;
+          j--;
+      }
+ } while (i <= j);
+
+  #pragma omp parallel for
+  for (int k = 0; k <= 1; ++k)
+  {
+      if (k == 0 && start < j) {
+        if (j - start > THRES_A)
+            quicksort_a(v, start, j);
+        else
+            quicksort(v, start, j);
+      }
+
+      if (k == 1 && i < end) {
+        if (end - i > THRES_A)
+            quicksort_a(v, i, end);
+        else
+            quicksort(v, i, end);
+      }
+  }
+}
+```
+
 
 # Variant B
 
