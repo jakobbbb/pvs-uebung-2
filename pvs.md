@@ -61,7 +61,7 @@ void quicksort_a(float *v, int start, int end) {
 | 100,000 |  1.1088 |
 | 200,000 |  1.1742 |
 
-The sweet spot seems to be around 100000.
+The sweet spot seems to be around 800 to 1,000.
 
 # Variant B
 
