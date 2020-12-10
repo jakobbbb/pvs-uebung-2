@@ -9,7 +9,7 @@ listings-no-page-break: true
 # Overview of Speedups
 
 | CPU / Cores / Threads | Speedup A | Speedup B | Speedup C |
-|-----------------------+-----------+-----------+-----------|
+|-----------------------|-----------|-----------|-----------|
 | i5-3570K / 4 / 4      |           |           |    2.9375 |
 
 # Variant C
