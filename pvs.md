@@ -21,6 +21,9 @@ This is the first parallel version. Here we used `parallel for` which fuses
 `parallel` and `for`. The former spawns a group of threads while the latter
 divides loop iterations between the spawned threads.
 
+At a certain point, it's not worth it to run the parallel version, so
+below a certain threshold, the serial version is called instead.
+
 ```cpp
 #define THRES_A 800
 
@@ -50,7 +53,11 @@ void quicksort_a(float *v, int start, int end) {
 
 # Variant B
 
-The second variation of a parallelized quicksort uses parallel sections. We devided the decomposition of the left and right segments in two different sections:
+The second variation of a parallelized quicksort uses parallel sections.
+We devided the decomposition of the left and right segments in two
+different sections.
+
+Again, there is a threshold for parallel execution.
 
 ```#define THRES_B 2000
 
