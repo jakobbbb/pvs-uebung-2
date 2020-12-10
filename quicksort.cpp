@@ -35,7 +35,46 @@ void quicksort(float* v, int start, int end) {
 }
 
 
-#define THRES 100
+#define THRES_A 800
+
+void quicksort_a(float *v, int start, int end) {
+  int i = start, j = end;
+  float pivot;
+
+  pivot = v[(start + end) / 2];
+  do {
+      while (v[i] < pivot)
+          i++;
+      while (pivot < v[j])
+          j--;
+      if (i <= j) {
+          swap(v, i, j);
+          i++;
+          j--;
+      }
+ } while (i <= j);
+
+  #pragma omp parallel for
+  for (int k = 0; k <= 1; ++k)
+  {
+      if (k == 0 && start < j) {
+        if (j - start > THRES_A)
+            quicksort_a(v, start, j);
+        else
+            quicksort(v, start, j);
+      }
+
+      if (k == 1 && i < end) {
+        if (end - i > THRES_A)
+            quicksort_a(v, i, end);
+        else
+            quicksort(v, i, end);
+      }
+  }
+}
+
+
+#define THRES_C 100
 
 void _quicksort_c(float* v, int start, int end);
 
@@ -63,10 +102,10 @@ void _quicksort_c(float* v, int start, int end) {
     } while (i <= j);
 
     if (start < j)  // Teile und herrsche
-#pragma omp task if(j - start > THRES)
+#pragma omp task if(j - start > THRES_C)
         _quicksort_c(v, start, j);  // Linkes Segment zerlegen
     if (i < end)
-#pragma omp task if(end - i > THRES)
+#pragma omp task if(end - i > THRES_C)
         _quicksort_c(v, i, end);  // Rechtes Segment zerlegen
 }
 

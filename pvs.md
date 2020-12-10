@@ -11,6 +11,12 @@ listings-no-page-break: true
 | CPU / Cores / Threads | Speedup A | Speedup B | Speedup C |
 |-----------------------|-----------|-----------|-----------|
 | i5-3570K / 4 / 4      |           |           |    2.9375 |
+| i5-3320M / 2 / 4      |    1.1131 |           |    2.0371 |
+
+
+# Variant A
+
+(TODO)
 
 # Variant C
 
