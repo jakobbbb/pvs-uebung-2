@@ -8,16 +8,79 @@ listings-no-page-break: true
 
 # Overview of Speedups
 
-| CPU / Cores / Threads | Speedup A | Speedup B | Speedup C |
+|**CPU / Cores / Threads**|**Speedup A**|**Speedup B**|**Speedup C**|
 |-----------------------|-----------|-----------|-----------|
-| i5-3570K / 4 / 4      |           |           |    2.9375 |
-| i5-3320M / 2 / 4      |    1.1131 |           |    2.0371 |
 | i7-4702MQ / 4 / 8     |    1.1655 |    1.1345 |    3.6758 |
+| i5-3320M / 2 / 4      |    1.0850 |    1.0608 |    2.1462 |
+| Ryzen 5 3600 / 6 / 12 |    1.1226 |    1.3057 |    1.4277 |
 
+Node: The speedup on the Ryzen machine is much lower than expected,
+perhaps this is due to the machine running Windows.  We used MinGW's
+gcc.
 
 # Variant A
 
-(TODO)
+This is the first parallel version. Here we used `parallel for` which fuses
+`parallel` and `for`. The former spawns a group of threads while the latter
+divides loop iterations between the spawned threads.
+
+```cpp
+#define THRES_A 800
+
+void quicksort_a(float *v, int start, int end) {
+
+  /* ... */
+
+  #pragma omp parallel for
+  for (int k = 0; k <= 1; ++k)
+  {
+      if (k == 0 && start < j) {
+        if (j - start > THRES_A)
+            quicksort_a(v, start, j);
+        else
+            quicksort(v, start, j);
+      }
+
+      if (k == 1 && i < end) {
+        if (end - i > THRES_A)
+            quicksort_a(v, i, end);
+        else
+            quicksort(v, i, end);
+      }
+  }
+}
+```
+
+
+# Variant B
+
+The second parallel quicksort uses `sections`... (TODO)
+
+```cpp
+#define THRES_B 2000
+
+void quicksort_b(float* v, int start, int end) {
+
+    /* ... */
+
+#pragma omp parallel if (end-start > THRES_B)
+    {
+#pragma omp sections
+        {
+#pragma omp section
+            {
+                if (start < j)               // Teile und herrsche
+                    quicksort(v, start, j);  // Linkes Segment zerlegen
+            }
+#pragma omp section
+            {
+                if (i < end)
+                    quicksort(v, i, end);  // Rechtes Segment zerlegen
+            }
+        }
+    }
+}
+```
 
 # Variant B
 
