@@ -51,6 +51,18 @@ void quicksort_a(float *v, int start, int end) {
   }
 }
 ```
+| `THRES` | Speedup |
+|---------|---------|
+|       0 |  0.1937 |
+|      10 |  0.5766 |
+|     100 |  1.1163 |
+|     800 |  1.2346 |
+|   1,000 |  1.2372 |
+|  10,000 |  1.2236 |
+| 100,000 |  1.1088 |
+| 200,000 |  1.1742 |
+
+The sweet spot seems to be around 100000.
 
 # Variant B
 
