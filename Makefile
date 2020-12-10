@@ -33,7 +33,7 @@ PDF_FILENAME=$(ASSIGNMENT_TITLE).pdf
 pdf:
 	pandoc pvs.md -o $(PDF_FILENAME) --from markdown --template ~/.pandoc/eisvogel.latex --listings
 
-FILES=Makefile pvs.md quicksort.cpp $(PDF_FILENAME)
+FILES=Makefile pvs.md *.{c,h}pp $(PDF_FILENAME)
 
 ASSIGNMENT_DIR=$(ASSIGNMENT_TITLE)
 TARBALL_NAME=$(ASSIGNMENT_TITLE)-piekarski-wichmann-ruckel.tar.gz
