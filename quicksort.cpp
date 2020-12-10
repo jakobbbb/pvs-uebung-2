@@ -35,6 +35,96 @@ void quicksort(float* v, int start, int end) {
 }
 
 
+
+
+void _quicksort_a(float* v, int start, int end);
+
+void quicksort_a(float* v, int start, int end) {
+#pragma omp parallel
+#pragma omp single
+    _quicksort_a(v, start, end);
+}
+
+
+void _quicksort_a(float *v, int start, int end) 
+{
+  int i = start, j = end;
+  float pivot;
+
+  pivot = v[(start + end) / 2];
+  do {
+      while (v[i] < pivot)
+          i++;
+      while (pivot < v[j])
+          j--;
+      if (i <= j) {
+          swap(v, i, j);
+          i++;
+          j--;
+      }
+ } while (i <= j);
+  #pragma omp parallel num_threads(20)
+    {
+        #pragma omp for
+        for (int k = 0; k <= 1; ++k)
+        {
+            if (k == 0)
+                if (start < j)                                
+                    quicksort(v, start, j);
+
+            if (k == 1)
+                if (i < end)
+                    quicksort(v, i, end);
+        }
+    }
+}
+
+
+
+
+void _quicksort_b(float* v, int start, int end);
+
+void quicksort_b(float* v, int start, int end) {
+#pragma omp parallel
+#pragma omp single
+    _quicksort_b(v, start, end);
+}
+
+
+void _quicksort_b(float* v, int start, int end) {
+    int i = start, j = end;
+    float pivot;
+
+    pivot = v[(start + end) / 2];  // mittleres Element
+    do {
+        while (v[i] < pivot)
+            i++;
+        while (pivot < v[j])
+            j--;
+        if (i <= j) {  // wenn sich beide Indizes nicht beruehren
+            swap(v, i, j);
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+    #pragma omp parallel num_threads(20)
+    {
+    #pragma omp sections nowait
+        {
+            #pragma omp section
+            if (start < j)                                       
+                quicksort(v, start, j);                      
+            #pragma omp section
+            if (i < end)
+                quicksort(v, i, end);                       
+        }
+    }
+}
+
+
+
+
 #define THRES 100
 
 void _quicksort_c(float* v, int start, int end);

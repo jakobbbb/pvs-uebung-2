@@ -69,9 +69,9 @@ int test() {
     test_is_sorted();
 
     double time_serial = test_sort(quicksort, "serial");
-    // test_sort(quicksort_a, "parallel variant A", time_serial);
-    // test_sort(quicksort_b, "parallel variant B", time_serial);
-    test_sort(quicksort_c, "parallel variant C", time_serial);
+    test_sort(quicksort_a, "parallel variant A", time_serial);
+    test_sort(quicksort_b, "parallel variant B", time_serial);
+    //test_sort(quicksort_c, "parallel variant C", time_serial);
 
     printf("All went well :)\n");
     return 0;
