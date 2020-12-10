@@ -137,3 +137,9 @@ The sweet spot seems to be around 100.  For lists smaller than that, the
 overhead of task creation and scheduling overpowers the benefits of
 parallelization.  The opposite applies to list larger than the
 threshold.
+
+The value of the threshold depends on the amount of overhead.  Because
+variant C has the least overhead, it's threshold for parallel vs. serial
+execution of 100 is the lowest among the variants.
+The more overhead there is to a parallel execution, the larger the list
+must be for parallelization to be effective.
