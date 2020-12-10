@@ -19,6 +19,54 @@ listings-no-page-break: true
 
 (TODO)
 
+# Variant B
+
+The second variation of a parallelized quicksort uses parallel sections. We devided the decomposition of the left and right segments in two different sections:
+
+```#define THRES_B 2000
+
+void quicksort_b(float* v, int start, int end) {
+    /* ... */
+
+#pragma omp parallel if (end-start > THRES_B)
+    {
+#pragma omp sections
+        {
+#pragma omp section
+            {
+                if (start < j)               // Teile und herrsche
+                    quicksort(v, start, j);  // Linkes Segment zerlegen
+            }
+#pragma omp section
+            {
+                if (i < end)
+                    quicksort(v, i, end);  // Rechtes Segment zerlegen
+            }
+        }
+    }
+}
+```
+
+We can do this at these positions because we have two code blocks which are independant of one another. Each section is now on a different thread.
+
+To find a sweet spot for the threshold `THRES`, some tests were
+performed (machine with 4 core and 8 threads):
+
+| `THRES` | Speedup |
+|---------|---------|
+|       0 |  1.1281 |
+|      10 |  1.1936 |
+|     100 |  1.1707 |
+|   1,000 |  1.1683 |
+|   2,000 |  1.0966 |
+|   5,000 |  1.1033 |
+|  10,000 |  1.1304 |
+| 100,000 |  0.9994 |
+
+The sweet spot seems to be around 2000. For lists smaller than that, the
+overhead of section creation overpowers the benefits of parallelization. 
+The opposite applies to list larger than the threshold.
+
 # Variant C
 
 Our third variation on parallelized Quicksort attempts to reduce
@@ -51,7 +99,7 @@ void _quicksort_c(float* v, int start, int end) {
 }
 ```
 
-To find a sweep spot for the threshold `THRES`, some tests were
+To find a sweet spot for the threshold `THRES`, some tests were
 performed (machine with 4 core and 4 threads):
 
 | `THRES` | Speedup |
@@ -72,5 +120,5 @@ due to overhead.
 
 The sweet spot seems to be around 100.  For lists smaller than that, the
 overhead of task creation and scheduling overpowers the benefits of
-parallelization.  The opposite applies to list larger than the
+parallelization. The opposite applies to list larger than the
 threshold.
